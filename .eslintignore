@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Build directories
+build/
+dist/
+lib/
+scripts/
+
+# Configuration files
+*.config.js
+metro.config.js
+babel.config.js
+
+# Native code
+android/
+ios/
+
+# Other
+coverage/
+.expo/
+.expo-shared
+web-build/
+.env
+.env.* 
+__tests__/
+.vscode/
+coverage/
+docs/
+cli/

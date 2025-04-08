@@ -1,0 +1,34 @@
+{
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit"
+  },
+  "home": {
+    "title": "Unistyles Demo",
+    "description": "This is a demo of react-native-unistyles with Expo Router tabs.",
+    "currentTheme": "Current theme",
+    "currentScreenSize": "Current screen size",
+    "goToSettings": "Go to Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "currentTheme": "Current Theme",
+    "availableThemes": "Available Themes",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "direction": "Text Direction",
+    "ltr": "Left to Right",
+    "rtl": "Right to Left"
+  },
+  "screenSizes": {
+    "xs": "Extra Small",
+    "sm": "Small",
+    "md": "Medium",
+    "lg": "Large",
+    "xl": "Extra Large"
+  }
+}

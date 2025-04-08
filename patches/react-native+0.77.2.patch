@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native/React/Fabric/Surface/RCTFabricSurface.mm b/node_modules/react-native/React/Fabric/Surface/RCTFabricSurface.mm
+index 7b3ce59..433cff0 100644
+--- a/node_modules/react-native/React/Fabric/Surface/RCTFabricSurface.mm
++++ b/node_modules/react-native/React/Fabric/Surface/RCTFabricSurface.mm
+@@ -143,6 +143,7 @@ - (RCTSurfaceView *)view
+ 
+   if (!_view) {
+     _view = [[RCTSurfaceView alloc] initWithSurface:(RCTSurface *)self];
++      [self _updateLayoutContext];
+     _touchHandler = [RCTSurfaceTouchHandler new];
+     [_touchHandler attachToView:_view];
+   }

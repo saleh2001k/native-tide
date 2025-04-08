@@ -1,0 +1,34 @@
+{
+  "common": {
+    "back": "رجوع",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل"
+  },
+  "home": {
+    "title": "تطبيق يونيستايلز",
+    "description": "هذا عرض توضيحي لـ react-native-unistyles مع علامات تبويب Expo Router.",
+    "currentTheme": "السمة الحالية",
+    "currentScreenSize": "حجم الشاشة الحالي",
+    "goToSettings": "الذهاب إلى الإعدادات"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "currentTheme": "السمة الحالية",
+    "availableThemes": "السمات المتاحة",
+    "language": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "direction": "اتجاه النص",
+    "ltr": "من اليسار إلى اليمين",
+    "rtl": "من اليمين إلى اليسار"
+  },
+  "screenSizes": {
+    "xs": "صغير جدًا",
+    "sm": "صغير",
+    "md": "متوسط",
+    "lg": "كبير",
+    "xl": "كبير جدًا"
+  }
+}
