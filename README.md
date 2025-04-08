@@ -174,20 +174,20 @@ src/
 
 ```bash
 cd native-tide
-npm install
+yarn
 ```
 
 ### Running the app
 
 ```bash
 # Start the app
-npm start
+yarn start
 
 # Run on iOS
-npm run ios
+yarn ios
 
 # Run on Android
-npm run android
+yarn android
 ```
 
 ## Learn More
