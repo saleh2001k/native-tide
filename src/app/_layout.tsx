@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ReactScan } from 'react-scan/native';
 
 import { AppProviders } from '@/providers/AppProviders';
 
@@ -20,20 +21,30 @@ SplashScreen.setOptions({
 });
 
 export const unstable_settings = {
-  initialRouteName: 'index',
+  initialRouteName: '(app)',
 };
 
 function RootLayoutContent() {
   return (
     <SafeAreaProvider>
-      <Stack
-        screenOptions={{
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerShown: false,
+      <ReactScan
+        options={{
+          enabled: true,
+          log: true,
+          animationWhenFlashing: false,
         }}
-      />
+      >
+        <Stack
+          screenOptions={{
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="(app)" />
+        </Stack>
+      </ReactScan>
     </SafeAreaProvider>
   );
 }
