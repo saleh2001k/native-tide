@@ -1,0 +1,26 @@
+{
+  "welcome": {
+    "title": "مرحباً بك في تطبيقك",
+    "subtitle": "تصميم بسيط ونظيف مع خطوط النظام"
+  },
+  "buttons": {
+    "getStarted": "ابدأ الآن",
+    "learnMore": "اعرف المزيد",
+    "goBack": "العودة"
+  },
+  "about": {
+    "title": "حول",
+    "description": "هذه شاشة بسيطة تم إنشاؤها باستخدام Expo Router و React Native Unistyles. يستخدم التطبيق نظام تصميم بسيط مع خطوط النظام ومجموعة ألوان نظيفة.",
+    "features": {
+      "title": "المميزات:",
+      "systemFonts": "خطوط النظام لأداء أفضل",
+      "minimalColors": "مجموعة ألوان رمادية بسيطة",
+      "cleanTypography": "مقياس طباعة نظيف",
+      "responsiveDesign": "رموز تصميم متجاوبة"
+    }
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "about": "حول"
+  }
+}
