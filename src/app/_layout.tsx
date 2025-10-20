@@ -1,58 +1,44 @@
-import '@/i18n'; // Initialize i18n
+import { CustomStack } from '../components/CustomStack'; // Use your custom stack
+import { LanguageProvider, useLanguage } from '../i18n/LanguageContext';
 
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ReactScan } from 'react-scan/native';
+function StackNavigator() {
+  const { isRTL } = useLanguage();
 
-import { AppProviders } from '@/providers/AppProviders';
-
-if (__DEV__) {
-  // Load Reactotron configuration in development. We don't want to
-  // include this in our production bundle, so we are using `if (__DEV__)`
-  // to only execute this in development.
-  require('src/devtools/ReactotronConfig.ts');
-}
-
-SplashScreen.preventAutoHideAsync();
-SplashScreen.setOptions({
-  fade: true,
-});
-
-export const unstable_settings = {
-  initialRouteName: '(app)',
-};
-
-function RootLayoutContent() {
   return (
-    <SafeAreaProvider>
-      <ReactScan
+    <CustomStack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'transparent',
+        },
+        headerTintColor: '#000',
+        headerTitleStyle: {
+          fontWeight: '600',
+        },
+        gestureDirection: isRTL ? 'horizontal' : 'horizontal-inverted',
+      }}
+    >
+      <CustomStack.Screen
+        name="index"
         options={{
-          enabled: true,
-          log: true,
-          animationWhenFlashing: false,
+          title: 'Home',
+          headerShown: true,
         }}
-      >
-        <Stack
-          screenOptions={{
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(app)" />
-        </Stack>
-      </ReactScan>
-    </SafeAreaProvider>
+      />
+      <CustomStack.Screen
+        name="about"
+        options={{
+          title: 'About',
+          headerShown: true,
+        }}
+      />
+    </CustomStack>
   );
 }
 
 export default function RootLayout() {
   return (
-    <AppProviders>
-      <RootLayoutContent />
-    </AppProviders>
+    <LanguageProvider>
+      <StackNavigator />
+    </LanguageProvider>
   );
 }

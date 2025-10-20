@@ -1,28 +1,14 @@
-import type { spacing } from './spacing';
-import type { timing } from './timing';
-import type { typography } from './typography';
+/**
+ * Theme Module Exports
+ *
+ * Central export point for all theme-related modules
+ */
 
-export interface Theme {
-  colors: {
-    palette: Record<string, string>;
-    transparent: string;
-    text: string;
-    textDim: string;
-    background: string;
-    border: string;
-    tint: string;
-    tintInactive: string;
-    separator: string;
-    error: string;
-    errorBackground: string;
-  };
-  spacing: typeof spacing;
-  typography: typeof typography;
-  timing: typeof timing;
-  isDark: boolean;
-}
-
-export * from './colors';
-export * from './spacing';
-export * from './timing';
-export * from './typography';
+export * from './breakpoints';
+export * from './themes';
+export { type ThemeName } from './themes';
+export * from './tokens';
+export { type FontSizeScale } from './tokens';
+export * from './types';
+// export * from './icons';
+export * from './fonts';

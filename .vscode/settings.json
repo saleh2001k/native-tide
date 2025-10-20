@@ -24,11 +24,19 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },
-  "cSpell.words": ["blurhash", "Daum", "Flashlist", "Lato", "Pressable"],
-  "i18n-ally.localesPaths": ["src/translations/"],
+  "cSpell.words": [
+    "blurhash",
+    "Daum",
+    "Flashlist",
+    "Lato",
+    "Pressable",
+    "Unistyles"
+  ],
+  "i18n-ally.localesPaths": ["src/i18n/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.disabled": false, // make sure to disable i18n-ally in your global setting and only enable it for such projects
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "i18n-ally.sourceLanguage": "en"
 }

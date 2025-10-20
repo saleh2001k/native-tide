@@ -44,7 +44,6 @@ A comprehensive React Native starter kit with dynamic multi-theme system, authen
 The styling system is built on `react-native-unistyles` and provides a comprehensive theme system:
 
 1. **Theme Structure**: All theme definitions are in the `src/theme` directory
-
    - `colors.ts` - Color palette and theme color definitions
    - `typography.ts` - Font families, sizes and styles
    - `spacing.ts` - Consistent spacing values

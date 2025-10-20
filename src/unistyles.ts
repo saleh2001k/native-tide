@@ -1,75 +1,35 @@
-import { UnistylesRegistry } from 'react-native-unistyles';
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/**
+ * Unistyles Configuration
+ *
+ * This file configures Unistyles with themes, breakpoints, and settings.
+ * Import this file in your App.tsx to initialize the styling system.
+ */
 
-import { getItem } from '@/lib/services/storage';
-import type { Theme } from '@/theme';
-import type { ThemeName } from '@/theme/colors';
-import {
-  darkTheme,
-  desertTheme,
-  forestTheme,
-  lightTheme,
-  midnightTheme,
-  nightBlueTheme,
-  oceanTheme,
-  sepiaTheme,
-} from '@/theme/colors';
+import { StyleSheet } from 'react-native-unistyles';
 
-type AppBreakpoints = {
-  xs: number;
-  sm: number;
-  md: number;
-  lg: number;
-  xl: number;
-};
+import { breakpoints, createThemes } from './theme';
 
-type AppThemes = {
-  light: Theme;
-  dark: Theme;
-  sepia: Theme;
-  nightBlue: Theme;
-  forest: Theme;
-  ocean: Theme;
-  midnight: Theme;
-  desert: Theme;
-};
+// Create themes with default font scale initially
+const themes = createThemes('default');
 
+// Declare the Unistyles module types
+type AppBreakpoints = typeof breakpoints;
+type AppThemes = typeof themes;
+
+// Configure Unistyles with themes and breakpoints
+StyleSheet.configure({
+  themes,
+  breakpoints,
+  settings: {
+    // Note: if adaptiveThemes is true, there is no need to set the initialTheme, it will crash the app if both are set
+    initialTheme: 'light', // 👈 Set your default theme here!
+    // adaptiveThemes: true, // (optional) enables system theme detectionr
+  },
+});
+
+// Augment the Unistyles types with our custom themes and breakpoints
 declare module 'react-native-unistyles' {
   export interface UnistylesBreakpoints extends AppBreakpoints {}
   export interface UnistylesThemes extends AppThemes {}
 }
-
-// Get initial theme from storage or default to light
-const getInitialTheme = (): ThemeName => {
-  const storedTheme = getItem<ThemeName>('app_theme');
-  return storedTheme || 'light';
-};
-
-// Register themes and breakpoints
-UnistylesRegistry.addBreakpoints({
-  xs: 0,
-  sm: 576,
-  md: 768,
-  lg: 992,
-  xl: 1200,
-});
-
-UnistylesRegistry.addThemes({
-  light: lightTheme,
-  dark: darkTheme,
-  sepia: sepiaTheme,
-  nightBlue: nightBlueTheme,
-  forest: forestTheme,
-  ocean: oceanTheme,
-  midnight: midnightTheme,
-  desert: desertTheme,
-});
-
-// Always get the fresh theme from storage on startup
-// This ensures perfect sync between app state and theme
-const initialTheme = getInitialTheme();
-
-// Set the initial theme from storage or use default
-UnistylesRegistry.addConfig({
-  initialTheme,
-  adaptiveThemes: false, // Turn off adaptive themes to prevent auto switching
-});

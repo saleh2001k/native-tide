@@ -1,58 +1,57 @@
 import * as Localization from 'expo-localization';
-import i18next from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import type { Language } from '@/lib/store/languageStore';
-import { useLanguageStore } from '@/lib/store/languageStore';
+// Import translation files
+import arCommon from './locales/ar/common.json';
+import enCommon from './locales/en/common.json';
 
-import ar from './locales/ar.json';
-// Import translations
-import en from './locales/en.json';
+// RTL languages
+const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
 
-const resources = {
-  en: { translation: en },
-  ar: { translation: ar },
+// Check if language is RTL
+export const isRTL = (language: string): boolean => {
+  return RTL_LANGUAGES.includes(language.split('-')[0]);
 };
 
-// Get the best language match from device settings
-const getDeviceLanguage = (): Language => {
-  const deviceLocales = Localization.getLocales();
-  const deviceLanguages = deviceLocales
-    .map((locale) => locale.languageCode)
-    .filter((code): code is string => code !== null);
-  const supportedLanguages = Object.keys(resources);
+// Get device language
+const getDeviceLanguage = (): string => {
+  const locale = Localization.getLocales()[0]?.languageCode || 'en';
 
-  // Find the first supported language from device preferences
-  const bestLanguage = deviceLanguages.find((lang) =>
-    supportedLanguages.includes(lang),
-  );
+  // Return supported language or default to English
+  if (['en', 'ar'].includes(locale)) {
+    return locale;
+  }
 
-  // Default to English if no match
-  return (bestLanguage as Language) || 'en';
+  return 'en'; // Default to English
 };
 
-// Get language from store or device
-const getLanguage = (): Language => {
-  const { language } = useLanguageStore.getState();
-  return language || getDeviceLanguage();
-};
-
-// Initialize i18next
-i18next.use(initReactI18next).init({
+// Initialize i18n
+i18n.use(initReactI18next).init({
   compatibilityJSON: 'v4',
-  resources,
-  lng: getLanguage(),
+  lng: getDeviceLanguage(),
   fallbackLng: 'en',
+  debug: false,
+
+  resources: {
+    en: {
+      common: enCommon,
+    },
+    ar: {
+      common: arCommon,
+    },
+  },
+
+  defaultNS: 'common',
+  ns: ['common'],
+
   interpolation: {
-    escapeValue: false, // React already escapes by default
+    escapeValue: false, // React already does escaping
+  },
+
+  react: {
+    useSuspense: false, // Disable suspense for React Native
   },
 });
 
-// Add language change listener
-useLanguageStore.subscribe((state) => {
-  if (state.language && i18next.language !== state.language) {
-    i18next.changeLanguage(state.language);
-  }
-});
-
-export default i18next;
+export default i18n;

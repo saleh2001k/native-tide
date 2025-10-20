@@ -1,0 +1,26 @@
+{
+  "welcome": {
+    "title": "Welcome to Your App",
+    "subtitle": "A minimal, clean design with system fonts"
+  },
+  "buttons": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "goBack": "Go Back"
+  },
+  "about": {
+    "title": "About",
+    "description": "This is a simple screen created with Expo Router and React Native Unistyles. The app uses a minimal design system with system fonts and a clean color palette.",
+    "features": {
+      "title": "Features:",
+      "systemFonts": "System fonts for better performance",
+      "minimalColors": "Minimal gray color palette",
+      "cleanTypography": "Clean typography scale",
+      "responsiveDesign": "Responsive design tokens"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About"
+  }
+}

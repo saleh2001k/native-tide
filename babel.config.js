@@ -1,6 +1,18 @@
-const { withReactScanTreeShake } = require('react-scan/babel');
+module.exports = function (api) {
+  api.cache(true);
 
-module.exports = withReactScanTreeShake({
-  presets: ['babel-preset-expo'],
-  plugins: ['react-native-reanimated/plugin'],
-});
+  return {
+    presets: ['babel-preset-expo'],
+
+    plugins: [
+      [
+        'react-native-unistyles/plugin',
+        {
+          root: 'src',
+        },
+      ],
+      'babel-plugin-react-compiler', // this must be after the unistyles plugin
+      'react-native-worklets/plugin', // This must be the last plugin
+    ],
+  };
+};

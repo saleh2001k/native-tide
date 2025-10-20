@@ -1,5 +1,7 @@
 // Import Unistyles before expo-router
 import './src/unistyles';
+// Import i18n configuration
+import './src/i18n';
 
 // Point to the app directory in src
 declare const global: {
