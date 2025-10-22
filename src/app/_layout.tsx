@@ -1,6 +1,13 @@
 import { CustomStack } from '../components/CustomStack'; // Use your custom stack
 import { LanguageProvider, useLanguage } from '../i18n/LanguageContext';
 
+if (process.env.NODE_ENV === 'development') {
+  // Load Reactotron configuration in development. We don't want to
+  // include this in our production bundle, so we are using `if (__DEV__)`
+  // to only execute this in development.
+  import('../devtools/ReactotronConfig');
+}
+
 function StackNavigator() {
   const { isRTL } = useLanguage();
 
