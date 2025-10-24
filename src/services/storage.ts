@@ -6,6 +6,11 @@ import logger from './loggingService';
 // Create storage instances
 const mmkvStorage = new MMKV();
 
+export const STORAGE_KEYS = {
+  THEME: 'theme_preference',
+  THEME_MODE: 'theme_mode', // 'light', 'dark', or 'system'
+} as const;
+
 // Web storage interface
 interface WebStorage {
   getString: (key: string) => string | null;

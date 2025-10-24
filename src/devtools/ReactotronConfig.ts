@@ -5,16 +5,16 @@
  */
 import { router } from 'expo-router';
 import { NativeModules, Platform } from 'react-native';
+import type { MMKV } from 'react-native-mmkv';
+import { UnistylesRuntime } from 'react-native-unistyles';
 import { ArgType } from 'reactotron-core-client';
 import zustandPlugin from 'reactotron-plugin-zustand';
 import type { ReactotronReactNative } from 'reactotron-react-native';
 import mmkvPlugin from 'reactotron-react-native-mmkv';
 
-import { storage } from '@/lib/services/storage';
-import { useLanguageStore } from '@/lib/store/languageStore';
-import { useThemeStore } from '@/lib/store/themeStore';
-
 import packageJson from '../../package.json';
+import { storage } from '../services/storage';
+import { useThemeStore } from '../store/themeStore';
 import { Reactotron } from './ReactotronClient';
 
 const reactotron = Reactotron.configure({
@@ -28,15 +28,17 @@ const reactotron = Reactotron.configure({
 // Use zustand plugin to monitor stores
 reactotron.use(
   zustandPlugin({
-    stores: [
-      { name: 'theme', store: useThemeStore },
-      { name: 'language', store: useLanguageStore },
-    ],
+    stores: [{ name: 'theme', store: useThemeStore }],
     omitFunctionKeys: false,
   }),
 );
 
-reactotron.use(mmkvPlugin<ReactotronReactNative>({ storage }));
+// Only use MMKV plugin on native platforms
+if (Platform.OS !== 'web' && 'nativeInstance' in storage) {
+  reactotron.use(
+    mmkvPlugin<ReactotronReactNative>({ storage: storage as MMKV }),
+  );
+}
 
 if (Platform.OS !== 'web') {
   reactotron.useReactNative({
@@ -73,7 +75,11 @@ reactotron.onCustomCommand({
   command: 'resetStore',
   handler: () => {
     Reactotron.log('resetting store');
-    storage.clearAll();
+    if (Platform.OS !== 'web' && 'clearAll' in storage) {
+      storage.clearAll();
+    } else {
+      Reactotron.log('Storage clear not available on this platform');
+    }
   },
 });
 
@@ -83,7 +89,7 @@ reactotron.onCustomCommand<[{ name: 'route'; type: ArgType.String }]>({
     const { route } = args ?? {};
     if (route) {
       Reactotron.log(`Navigating to: ${route}`);
-      router.push(route);
+      router.push(route as '/about' | '/');
     } else {
       Reactotron.log('Could not navigate. No route provided.');
     }
@@ -100,6 +106,84 @@ reactotron.onCustomCommand({
   handler: () => {
     Reactotron.log('Going back');
     router.back();
+  },
+});
+
+// Theme switching commands
+reactotron.onCustomCommand({
+  title: 'Switch to Light Theme',
+  description: 'Switches to light theme',
+  command: 'setLightTheme',
+  handler: () => {
+    Reactotron.log('Switching to light theme');
+    // Disable adaptive themes first
+    UnistylesRuntime.setAdaptiveThemes(false);
+    setTimeout(() => {
+      useThemeStore.getState().setTheme('light');
+    }, 0);
+  },
+});
+
+reactotron.onCustomCommand({
+  title: 'Switch to Dark Theme',
+  description: 'Switches to dark theme',
+  command: 'setDarkTheme',
+  handler: () => {
+    Reactotron.log('Switching to dark theme');
+    // Disable adaptive themes first
+    UnistylesRuntime.setAdaptiveThemes(false);
+    setTimeout(() => {
+      useThemeStore.getState().setTheme('dark');
+    }, 0);
+  },
+});
+
+reactotron.onCustomCommand({
+  title: 'Toggle Theme',
+  description: 'Toggles between light and dark theme',
+  command: 'toggleTheme',
+  handler: () => {
+    const currentTheme = useThemeStore.getState().currentTheme;
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    Reactotron.log(`Toggling theme from ${currentTheme} to ${newTheme}`);
+    // Disable adaptive themes first
+    UnistylesRuntime.setAdaptiveThemes(false);
+    setTimeout(() => {
+      useThemeStore.getState().setTheme(newTheme);
+    }, 0);
+  },
+});
+
+reactotron.onCustomCommand({
+  title: 'Enable System Theme',
+  description: 'Enables adaptive themes to follow system setting',
+  command: 'setSystemTheme',
+  handler: () => {
+    Reactotron.log('Enabling system theme');
+    UnistylesRuntime.setAdaptiveThemes(true);
+  },
+});
+
+// Language switching commands
+reactotron.onCustomCommand({
+  title: 'Switch to English',
+  description: 'Changes language to English',
+  command: 'setEnglish',
+  handler: () => {
+    Reactotron.log('Switching to English');
+    // Note: This would need to be called from a component that has access to the language context
+    Reactotron.log('Use the language switcher in the app to change language');
+  },
+});
+
+reactotron.onCustomCommand({
+  title: 'Switch to Arabic',
+  description: 'Changes language to Arabic',
+  command: 'setArabic',
+  handler: () => {
+    Reactotron.log('Switching to Arabic');
+    // Note: This would need to be called from a component that has access to the language context
+    Reactotron.log('Use the language switcher in the app to change language');
   },
 });
 

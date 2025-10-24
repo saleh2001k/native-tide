@@ -1,6 +1,5 @@
 import { router } from 'expo-router';
-import { Text, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -19,7 +18,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Row style={styles.header} justifyContent="flex-end">
         <LanguageSwitcher />
       </Row>
@@ -49,7 +48,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </Column>
       </Column>
-    </SafeAreaView>
+    </View>
   );
 }
 

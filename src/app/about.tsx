@@ -4,13 +4,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { Column } from '../components/ui';
+import { type ThemeMode, useThemeToggle } from '../hooks/useThemeToggle';
 import { useLanguageWithTranslation } from '../i18n/LanguageContext';
 
 export default function AboutScreen() {
   const { t, isRTL } = useLanguageWithTranslation();
+  const { themeMode, setThemeMode } = useThemeToggle();
 
   const handleGoBack = () => {
     router.back();
+  };
+
+  const handleThemeChange = (mode: ThemeMode) => {
+    setThemeMode(mode);
   };
 
   return (
@@ -42,6 +48,54 @@ export default function AboutScreen() {
             <Text style={[styles.feature, isRTL && styles.textRTL]}>
               • {t('about.features.responsiveDesign')}
             </Text>
+          </Column>
+        </Column>
+
+        <Column gap={16}>
+          <Text style={[styles.featureTitle, isRTL && styles.textRTL]}>
+            Theme Settings
+          </Text>
+          <Column gap={12}>
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'light' && styles.themeOptionSelected,
+              ]}
+              onPress={() => handleThemeChange('light')}
+            >
+              <Text style={[styles.themeOptionText, isRTL && styles.textRTL]}>
+                ☀️ Light Theme
+              </Text>
+              {themeMode === 'light' && <Text style={styles.checkmark}>✓</Text>}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'dark' && styles.themeOptionSelected,
+              ]}
+              onPress={() => handleThemeChange('dark')}
+            >
+              <Text style={[styles.themeOptionText, isRTL && styles.textRTL]}>
+                🌙 Dark Theme
+              </Text>
+              {themeMode === 'dark' && <Text style={styles.checkmark}>✓</Text>}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.themeOption,
+                themeMode === 'system' && styles.themeOptionSelected,
+              ]}
+              onPress={() => handleThemeChange('system')}
+            >
+              <Text style={[styles.themeOptionText, isRTL && styles.textRTL]}>
+                🔄 System Theme
+              </Text>
+              {themeMode === 'system' && (
+                <Text style={styles.checkmark}>✓</Text>
+              )}
+            </TouchableOpacity>
           </Column>
         </Column>
 
@@ -99,5 +153,30 @@ const styles = StyleSheet.create((theme) => ({
   },
   textRTL: {
     textAlign: 'left',
+  },
+  themeOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: theme.spacing[3],
+    paddingHorizontal: theme.spacing[4],
+    borderRadius: theme.borderRadius.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.border.primary,
+    backgroundColor: theme.colors.surface.primary,
+  },
+  themeOptionSelected: {
+    borderColor: theme.colors.interactive.primary.default,
+    backgroundColor: theme.colors.surface.secondary,
+  },
+  themeOptionText: {
+    fontSize: theme.typography.fontSize.base,
+    color: theme.colors.text.primary,
+    fontWeight: theme.typography.fontWeight.medium,
+  },
+  checkmark: {
+    fontSize: theme.typography.fontSize.lg,
+    color: theme.colors.interactive.primary.default,
+    fontWeight: theme.typography.fontWeight.bold,
   },
 }));

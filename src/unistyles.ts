@@ -8,6 +8,7 @@
 
 import { StyleSheet } from 'react-native-unistyles';
 
+import { storage, STORAGE_KEYS } from './services';
 import { breakpoints, createThemes } from './theme';
 
 // Create themes with default font scale initially
@@ -17,14 +18,32 @@ const themes = createThemes('default');
 type AppBreakpoints = typeof breakpoints;
 type AppThemes = typeof themes;
 
+// Get stored theme preference from MMKV
+const getStoredThemeMode = (): 'light' | 'dark' | 'system' => {
+  try {
+    const storedData = storage.getString(STORAGE_KEYS.THEME);
+    if (storedData) {
+      const parsed = JSON.parse(storedData);
+      return parsed?.state?.themeMode || 'system';
+    }
+  } catch {
+    // Silently fall back to default
+  }
+  return 'system'; // Default to system theme
+};
+
+const storedThemeMode = getStoredThemeMode();
+
 // Configure Unistyles with themes and breakpoints
 StyleSheet.configure({
   themes,
   breakpoints,
   settings: {
-    // Note: if adaptiveThemes is true, there is no need to set the initialTheme, it will crash the app if both are set
-    initialTheme: 'light', // 👈 Set your default theme here!
-    // adaptiveThemes: true, // (optional) enables system theme detectionr
+    // If stored mode is 'system', enable adaptive themes
+    // Otherwise, set the specific initial theme
+    ...(storedThemeMode === 'system'
+      ? { adaptiveThemes: true }
+      : { initialTheme: storedThemeMode }),
   },
 });
 
