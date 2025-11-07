@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
 
-import { Column } from '../components/ui';
+import { Column, Row } from '../components/ui';
 import { type ThemeMode, useThemeToggle } from '../hooks/useThemeToggle';
 import { useLanguageWithTranslation } from '../i18n/LanguageContext';
 
@@ -23,9 +23,11 @@ export default function AboutScreen() {
     <SafeAreaView style={styles.container}>
       <Column style={styles.content} gap={32}>
         <Column gap={24}>
-          <Text style={[styles.title, isRTL && styles.textRTL]}>
-            {t('about.title')}
-          </Text>
+          <Row>
+            <Text style={[styles.title, isRTL && styles.textRTL]}>
+              {t('about.title')}
+            </Text>
+          </Row>
           <Text style={[styles.description, isRTL && styles.textRTL]}>
             {t('about.description')}
           </Text>

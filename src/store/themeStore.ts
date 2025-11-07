@@ -32,7 +32,7 @@ export const useThemeStore = create<ThemeState>((set) => ({
     StorageService.setItem('app_theme', theme);
     // Only update Unistyles if adaptive themes are disabled
     if (!UnistylesRuntime.hasAdaptiveThemes) {
-      UnistylesRuntime.setTheme(theme as any);
+      UnistylesRuntime.setTheme(theme as ThemeName);
     }
     set({ currentTheme: theme });
   },
