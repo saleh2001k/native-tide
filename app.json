@@ -24,6 +24,7 @@
       "package": "com.anonymous.nativetide"
     },
     "web": {
+      "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },

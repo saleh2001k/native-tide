@@ -4,9 +4,9 @@
  * Type definitions for the theme system
  */
 
-import type { UnistylesThemes } from 'react-native-unistyles';
+import type { lightTheme } from './themes';
 
-export type Theme = UnistylesThemes[keyof UnistylesThemes];
+export type Theme = typeof lightTheme;
 
 export type ThemeColors = {
   background: {

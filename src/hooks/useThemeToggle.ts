@@ -1,12 +1,9 @@
+import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
-import { UnistylesRuntime } from 'react-native-unistyles';
+import { Appearance } from 'react-native';
 
-import { getItem, setItem, STORAGE_KEYS } from '../services/storage';
-import { useThemeStore } from '../store/themeStore';
-import type { ThemeName } from '../theme';
-
-export type ThemeMode = 'light' | 'dark' | 'system';
+import type { ThemeMode, ThemeName } from '../services/themeStore';
+import { useThemeStore } from '../services/themeStore';
 
 interface UseThemeToggleReturn {
   currentTheme: ThemeName;
@@ -18,69 +15,67 @@ interface UseThemeToggleReturn {
 
 /**
  * Hook for managing theme switching between light, dark, and system themes
+ * Uses NativeWind's useColorScheme for theme management
  *
  * @returns Object containing theme state and control functions
  */
 export const useThemeToggle = (): UseThemeToggleReturn => {
-  const { currentTheme, setTheme } = useThemeStore();
-  const systemColorScheme = useColorScheme();
+  const { setColorScheme } = useColorScheme();
+  const {
+    themeMode,
+    themeName,
+    isDark,
+    setThemeMode: storeSetThemeMode,
+    toggleTheme: storeToggleTheme,
+  } = useThemeStore();
 
-  // Get the current theme mode from storage or default to 'light'
-  const getThemeMode = (): ThemeMode => {
-    const savedMode = getItem<ThemeMode>(STORAGE_KEYS.THEME_MODE);
-    return savedMode || 'light';
-  };
+  // Set theme mode
+  const setThemeMode = (mode: ThemeMode) => {
+    storeSetThemeMode(mode);
 
-  // Set theme mode in storage
-  const setThemeMode = async (mode: ThemeMode) => {
-    await setItem(STORAGE_KEYS.THEME_MODE, mode);
-
-    // Update the actual theme based on the mode
+    // Update NativeWind color scheme
     if (mode === 'system') {
-      // Enable adaptive themes in Unistyles
-      UnistylesRuntime.setAdaptiveThemes(true);
-      // Don't set a specific theme when using system mode
-      // Unistyles will handle it automatically
+      setColorScheme('system');
     } else {
-      // Disable adaptive themes first, then set specific theme
-      UnistylesRuntime.setAdaptiveThemes(false);
-      // Small delay to ensure adaptive themes are disabled
-      UnistylesRuntime.setTheme(mode as ThemeName);
-      setTheme(mode);
+      setColorScheme(mode);
     }
   };
 
-  // Get the current theme mode
-  const themeMode = getThemeMode();
+  // Toggle theme
+  const toggleTheme = () => {
+    storeToggleTheme();
+    const newTheme = themeName === 'light' ? 'dark' : 'light';
+    setColorScheme(newTheme);
+  };
 
-  // Update theme when system color scheme changes (only if mode is 'system')
+  // Sync NativeWind color scheme with theme mode on mount and when theme mode changes
   useEffect(() => {
     if (themeMode === 'system') {
-      UnistylesRuntime.setAdaptiveThemes(true);
-      // Don't manually set theme when using system mode
-      // Unistyles will handle it automatically
+      setColorScheme('system');
+    } else {
+      setColorScheme(themeMode);
     }
-  }, [systemColorScheme, themeMode]);
+  }, [themeMode, setColorScheme]);
 
-  // Toggle between light and dark (ignores system mode)
-  const toggleTheme = async () => {
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    // Disable adaptive themes first, then set specific theme
-    UnistylesRuntime.setAdaptiveThemes(false);
-    UnistylesRuntime.setTheme(newTheme as ThemeName);
-    setTheme(newTheme);
-    // Update the mode to the specific theme (not system)
-    await setItem(STORAGE_KEYS.THEME_MODE, newTheme);
-  };
+  // Listen to system theme changes when in system mode
+  useEffect(() => {
+    if (themeMode !== 'system') return;
 
-  // Determine if current theme is dark
-  const isDark = currentTheme === 'dark';
+    const subscription = Appearance.addChangeListener(() => {
+      // When system theme changes and we're in system mode, update the store
+      storeSetThemeMode('system');
+    });
+
+    return () => subscription.remove();
+  }, [themeMode, storeSetThemeMode]);
 
   return {
-    currentTheme,
+    currentTheme: themeName,
     themeMode,
     setThemeMode,
     isDark,
     toggleTheme,
   };
 };
+
+export type { ThemeMode };

@@ -1,5 +1,4 @@
-// Import Unistyles before expo-router
-import './src/unistyles';
+import './global.css';
 // Import i18n configuration
 import './src/i18n';
 

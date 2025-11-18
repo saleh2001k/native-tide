@@ -2,7 +2,7 @@
  * Responsive Breakpoints Configuration
  *
  * Defines the breakpoints for responsive design across different device sizes.
- * These breakpoints are used by Unistyles to apply conditional styling.
+ * These breakpoints align with Tailwind CSS's default breakpoints.
  */
 
 export const breakpoints = {

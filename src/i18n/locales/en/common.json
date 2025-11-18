@@ -10,7 +10,7 @@
   },
   "about": {
     "title": "About",
-    "description": "This is a simple screen created with Expo Router and React Native Unistyles. The app uses a minimal design system with system fonts and a clean color palette.",
+    "description": "This is a simple screen created with Expo Router and NativeWind. The app uses a minimal design system with system fonts and a clean color palette.",
     "features": {
       "title": "Features:",
       "systemFonts": "System fonts for better performance",

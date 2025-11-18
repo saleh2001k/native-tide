@@ -4,7 +4,7 @@
   <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
 Native Tide </h1>
 
-A comprehensive React Native starter kit with dynamic multi-theme system, authentication setup, and best practices using `react-native-unistyles`.
+A comprehensive React Native starter kit with dynamic multi-theme system, authentication setup, and best practices using `nativewind`.
 
 ## Development Status
 
@@ -14,8 +14,9 @@ A comprehensive React Native starter kit with dynamic multi-theme system, authen
 
 ## Features
 
-- **Dynamic Theme System**: 8 beautiful themes to choose from
+- **Dynamic Theme System**: Light and dark themes with system preference support
 - **Type-Safe**: Fully typed theme definitions
+- **NativeWind**: Tailwind CSS for React Native
 - **Authentication Ready**: Pre-configured auth flows
 - **Internationalization**: Multi-language support with i18n
 - **Navigation**: Expo Router for file-based routing
@@ -26,100 +27,70 @@ A comprehensive React Native starter kit with dynamic multi-theme system, authen
 
 ## Available Themes
 
-| Theme Name | Description                               |
-| ---------- | ----------------------------------------- |
-| light      | Classic light theme with blue accents     |
-| dark       | Dark theme with inverted colors           |
-| sepia      | Warm, paper-like theme with amber accents |
-| nightBlue  | Dark blue theme with bright accents       |
-| forest     | Natural green theme with earth tones      |
-| ocean      | Calming blue theme with teal accents      |
-| midnight   | Dark theme with purple accents            |
-| desert     | Warm, sandy theme with orange accents     |
+| Theme Name | Description                      |
+| ---------- | -------------------------------- |
+| light      | Classic light theme              |
+| dark       | Dark theme with inverted colors  |
+| system     | Follows device system preference |
 
 ## How to Use the Styling System
 
 ### Theme Configuration
 
-The styling system is built on `react-native-unistyles` and provides a comprehensive theme system:
+The styling system is built on `nativewind` and provides Tailwind CSS utility classes for React Native:
 
 1. **Theme Structure**: All theme definitions are in the `src/theme` directory
-   - `colors.ts` - Color palette and theme color definitions
-   - `typography.ts` - Font families, sizes and styles
-   - `spacing.ts` - Consistent spacing values
-   - `timing.ts` - Animation timing presets
+   - `themes.ts` - Theme color definitions
+   - `tokens.ts` - Design tokens (typography, spacing, etc.)
+   - `types.ts` - Type definitions
 
-2. **Creating Stylesheets**:
+2. **Using Tailwind Classes**:
 
 ```jsx
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { View, Text } from 'react-native';
 
 // In your component:
 function MyComponent() {
-  const { styles, theme } = useStyles(stylesheet);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Styled Text</Text>
+    <View className="bg-white dark:bg-black p-4 rounded-lg">
+      <Text className="text-black dark:text-white text-base font-bold">
+        Styled Text
+      </Text>
     </View>
   );
 }
-
-// Define your stylesheet:
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    backgroundColor: theme.colors.background,
-    padding: theme.spacing.md,
-    borderRadius: 8,
-  },
-  text: {
-    color: theme.colors.text,
-    fontSize: theme.typography.size.md,
-    fontWeight: 'bold',
-  },
-}));
 ```
 
 3. **Changing Themes**:
 
 ```jsx
-import { UnistylesRuntime } from 'react-native-unistyles';
+import { useThemeToggle } from '../hooks/useThemeToggle';
 
-// Toggle between light and dark
-const toggleTheme = () => {
-  const newTheme = UnistylesRuntime.themeName === 'light' ? 'dark' : 'light';
-  UnistylesRuntime.setTheme(newTheme);
-};
+// In your component:
+function ThemeSettings() {
+  const { themeMode, setThemeMode } = useThemeToggle();
 
-// Set a specific theme
-UnistylesRuntime.setTheme('ocean');
+  // Toggle between light and dark
+  const toggleTheme = () => {
+    const newMode = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(newMode);
+  };
 
-// Get current theme name
-const currentTheme = UnistylesRuntime.themeName;
+  // Set a specific theme
+  setThemeMode('dark');
+
+  // Set to follow system preference
+  setThemeMode('system');
+}
 ```
 
 4. **Responsive Design**:
 
 ```jsx
-// Access the current breakpoint
-const breakpoint = UnistylesRuntime.breakpoint;
-
-// Create responsive styles
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    // Base styles
-    padding: theme.spacing.sm,
-
-    // Breakpoint-specific styles
-    '@md': {
-      padding: theme.spacing.md,
-    },
-    '@lg': {
-      padding: theme.spacing.lg,
-      flexDirection: 'row',
-    },
-  },
-}));
+// Use Tailwind's responsive prefixes
+<View className="p-2 md:p-4 lg:p-6 flex-col lg:flex-row">
+  <Text className="text-sm md:text-base lg:text-lg">Responsive Text</Text>
+</View>
 ```
 
 ## Project Structure
@@ -149,12 +120,11 @@ src/
 │   ├── store/             # Zustand store setup
 │   └── utils/             # Utility functions
 ├── providers/             # Context providers
-├── theme/                 # Theme definitions
-│   ├── colors.ts          # Color definitions
-│   ├── spacing.ts         # Spacing constants
-│   ├── typography.ts      # Typography definitions
-│   └── timing.ts          # Animation timing
-└── unistyles.ts           # Unistyles configuration
+└── theme/                 # Theme definitions
+    ├── themes.ts          # Theme color definitions
+    ├── tokens.ts          # Design tokens
+    ├── types.ts           # Type definitions
+    └── breakpoints.ts     # Responsive breakpoints
 ```
 
 ## Getting Started
@@ -191,7 +161,8 @@ yarn android
 
 ## Learn More
 
-- [Unistyles documentation](https://www.unistyl.es)
+- [NativeWind documentation](https://www.nativewind.dev/)
+- [Tailwind CSS documentation](https://tailwindcss.com/docs)
 - [Expo Router documentation](https://docs.expo.dev/router/introduction/)
 - [Zustand documentation](https://github.com/pmndrs/zustand)
 - [React Native documentation](https://reactnative.dev/docs/getting-started)

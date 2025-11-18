@@ -2,9 +2,21 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// Import translation files
 import arCommon from './locales/ar/common.json';
 import enCommon from './locales/en/common.json';
+import type { RecursiveKeyOf } from './types';
+
+export const resources = {
+  en: {
+    common: enCommon,
+  },
+  ar: {
+    common: arCommon,
+  },
+} as const;
+
+export type DefaultLocale = typeof resources.en.common;
+export type TxKeyPath = RecursiveKeyOf<DefaultLocale>;
 
 // RTL languages
 const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
@@ -33,14 +45,7 @@ i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   debug: false,
 
-  resources: {
-    en: {
-      common: enCommon,
-    },
-    ar: {
-      common: arCommon,
-    },
-  },
+  resources,
 
   defaultNS: 'common',
   ns: ['common'],

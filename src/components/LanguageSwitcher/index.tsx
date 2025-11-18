@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 
 import { useLanguageWithTranslation } from '../../i18n/LanguageContext';
 
@@ -21,30 +20,38 @@ export const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <View style={[styles.container, isRTL && styles.containerRTL]}>
+    <View
+      className={`flex-row bg-gray-50 dark:bg-gray-800 rounded-lg p-1 gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+    >
       <TouchableOpacity
-        style={[styles.button, currentLanguage === 'en' && styles.activeButton]}
+        className={`px-4 py-2 rounded-md min-w-[50px] items-center ${
+          currentLanguage === 'en' ? 'bg-black dark:bg-white' : ''
+        }`}
         onPress={changeToEnglish}
       >
         <Text
-          style={[
-            styles.buttonText,
-            currentLanguage === 'en' && styles.activeButtonText,
-          ]}
+          className={`text-sm font-medium ${
+            currentLanguage === 'en'
+              ? 'text-white dark:text-black'
+              : 'text-gray-600 dark:text-gray-300'
+          }`}
         >
           EN
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, currentLanguage === 'ar' && styles.activeButton]}
+        className={`px-4 py-2 rounded-md min-w-[50px] items-center ${
+          currentLanguage === 'ar' ? 'bg-black dark:bg-white' : ''
+        }`}
         onPress={changeToArabic}
       >
         <Text
-          style={[
-            styles.buttonText,
-            currentLanguage === 'ar' && styles.activeButtonText,
-          ]}
+          className={`text-sm font-medium ${
+            currentLanguage === 'ar'
+              ? 'text-white dark:text-black'
+              : 'text-gray-600 dark:text-gray-300'
+          }`}
         >
           عربي
         </Text>
@@ -52,34 +59,3 @@ export const LanguageSwitcher: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create((theme) => ({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: theme.colors.surface.secondary,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing[1],
-    gap: theme.spacing[1],
-  },
-  containerRTL: {
-    flexDirection: 'row-reverse',
-  },
-  button: {
-    paddingHorizontal: theme.spacing[4],
-    paddingVertical: theme.spacing[2],
-    borderRadius: theme.borderRadius.md,
-    minWidth: 50,
-    alignItems: 'center',
-  },
-  activeButton: {
-    backgroundColor: theme.colors.interactive.primary.default,
-  },
-  buttonText: {
-    fontSize: theme.typography.fontSize.sm,
-    fontWeight: theme.typography.fontWeight.medium,
-    color: theme.colors.text.secondary,
-  },
-  activeButtonText: {
-    color: theme.colors.text.inverse,
-  },
-}));

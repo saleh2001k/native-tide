@@ -6,7 +6,6 @@
 import { router } from 'expo-router';
 import { NativeModules, Platform } from 'react-native';
 import type { MMKV } from 'react-native-mmkv';
-import { UnistylesRuntime } from 'react-native-unistyles';
 import { ArgType } from 'reactotron-core-client';
 import zustandPlugin from 'reactotron-plugin-zustand';
 import type { ReactotronReactNative } from 'reactotron-react-native';
@@ -14,7 +13,7 @@ import mmkvPlugin from 'reactotron-react-native-mmkv';
 
 import packageJson from '../../package.json';
 import { storage } from '../services/storage';
-import { useThemeStore } from '../store/themeStore';
+import { useThemeStore } from '../services/themeStore';
 import { Reactotron } from './ReactotronClient';
 
 const reactotron = Reactotron.configure({
@@ -116,11 +115,7 @@ reactotron.onCustomCommand({
   command: 'setLightTheme',
   handler: () => {
     Reactotron.log('Switching to light theme');
-    // Disable adaptive themes first
-    UnistylesRuntime.setAdaptiveThemes(false);
-    setTimeout(() => {
-      useThemeStore.getState().setTheme('light');
-    }, 0);
+    useThemeStore.getState().setThemeMode('light');
   },
 });
 
@@ -130,11 +125,7 @@ reactotron.onCustomCommand({
   command: 'setDarkTheme',
   handler: () => {
     Reactotron.log('Switching to dark theme');
-    // Disable adaptive themes first
-    UnistylesRuntime.setAdaptiveThemes(false);
-    setTimeout(() => {
-      useThemeStore.getState().setTheme('dark');
-    }, 0);
+    useThemeStore.getState().setThemeMode('dark');
   },
 });
 
@@ -143,24 +134,18 @@ reactotron.onCustomCommand({
   description: 'Toggles between light and dark theme',
   command: 'toggleTheme',
   handler: () => {
-    const currentTheme = useThemeStore.getState().currentTheme;
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    Reactotron.log(`Toggling theme from ${currentTheme} to ${newTheme}`);
-    // Disable adaptive themes first
-    UnistylesRuntime.setAdaptiveThemes(false);
-    setTimeout(() => {
-      useThemeStore.getState().setTheme(newTheme);
-    }, 0);
+    Reactotron.log('Toggling theme');
+    useThemeStore.getState().toggleTheme();
   },
 });
 
 reactotron.onCustomCommand({
   title: 'Enable System Theme',
-  description: 'Enables adaptive themes to follow system setting',
+  description: 'Follow system theme setting',
   command: 'setSystemTheme',
   handler: () => {
     Reactotron.log('Enabling system theme');
-    UnistylesRuntime.setAdaptiveThemes(true);
+    useThemeStore.getState().setThemeMode('system');
   },
 });
 
